@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>火面長カバー判定アプリ</title>
+<style>
+  body {
+    font-family: "Hiragino Sans", "Meiryo", sans-serif;
+    text-align: center;
+    padding: 20px;
+    background-color: #f2f6ff;
+  }
+  h1 {
+    color: #d33;
+  }
+  .box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 400px;
+    margin: 0 auto;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  }
+  input {
+    width: 100px;
+    padding: 5px;
+    margin: 5px;
+    font-size: 16px;
+    text-align: center;
+  }
+  button {
+    background-color: #2979ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    margin-top: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #1559c2;
+  }
+  .result {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<h1>🔥 火面長カバー判定アプリ 🔥</h1>
+<div class="box">
+  <div>
+    <label>火面長（m）:</label><br>
+    <input type="number" id="fireLength" min="10" step="10" value="100">
+  </div>
+
+  <div style="margin-top:10px;">
+    <label>ポンプ車（3本×10m = 30m/台）:</label><br>
+    <input type="number" id="pumpCars" min="0" value="0"> 台
+  </div>
+
+  <div>
+    <label>可搬ポンプ（2本×10m = 20m/台）:</label><br>
+    <input type="number" id="portablePumps" min="0" value="0"> 台
+  </div>
+
+  <button onclick="checkCoverage()">計算</button>
+
+  <p class="result" id="resultText"></p>
+</div>
+
+<script>
+function checkCoverage() {
+  const fireLength = Number(document.getElementById("fireLength").value);
+  const pumpCars = Number(document.getElementById("pumpCars").value);
+  const portablePumps = Number(document.getElementById("portablePumps").value);
+
+  if (fireLength <= 0) {
+    alert("火面長を入力してください。");
+    return;
+  }
+
+  const totalLength = pumpCars * 30 + portablePumps * 20;
+  let resultText = `火面長：${fireLength} m\n対応可能長さ：${totalLength} m`;
+
+  if (totalLength >= fireLength) {
+    resultText += `\n✅ 火面長をカバーできます！`;
+  } else {
+    const short = fireLength - totalLength;
+    resultText += `\n❌ あと ${short} m 分足りません。`;
+  }
+
+  document.getElementById("resultText").textContent = resultText;
+}
+</script>
+
+</body>
+</html>
